@@ -8,7 +8,7 @@
 //
 // File Name	: 
 // Description	: 
-// Author		: Harrison Orsbourne and co.
+// Author		: Harrison Orsbourne and co. and vaughan 
 // Mail			: your.name@mediadesign.school.nz
 //
 
