@@ -38,8 +38,8 @@ void GameLoop() {
 }
 
 LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lparam)
-{	  
-	
+{
+
 	switch (_msg)
 	{
 	case WM_CREATE:
@@ -52,32 +52,30 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		switch (LOWORD(_wparam)) {
 
 
-		case ID_FILE_QUIT:{
+		case ID_FILE_QUIT: {
 
 			PostQuitMessage(0);
 			break;
 
 		}
 		case ID_HELP_HOWTOPLAY: {
-		//insert instructions on how to play
-			
+			//insert instructions on how to play
+
 			break;
 		}
 		case ID_HELP_CONTROLS: {
 			//insert control text here
-		
+			game.initialise();
 			break;
 		}
 		case ID_NEWGAME_DRAW1: {
-		//insert stuff to start game only drawing one card
-			card.setSuit();
-			card.setValue();
+			//insert stuff to start game only drawing one card
+			game.initialise();
 			break;
 		}
 		case ID_NEWGAME_DRAW3: {
-		//insert stuff to start game only drawing 3 cards
-			card.setSuit();
-			card.setValue();
+			//insert stuff to start game only drawing 3 cards
+
 			break;
 		}
 
@@ -98,7 +96,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 	default:break;
 	} // End switch.
 
-	// Process any messages that we did not take care of...
+	  // Process any messages that we did not take care of...
 
 	return (DefWindowProc(_hwnd, _msg, _wparam, _lparam));
 }
@@ -123,7 +121,7 @@ int WINAPI WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdL
 	winclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	winclass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	winclass.hbrBackground =
-	static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
+		static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
 	winclass.lpszMenuName = NULL;
 	winclass.lpszClassName = WINDOW_CLASS_NAME;
 	winclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);

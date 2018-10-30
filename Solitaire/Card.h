@@ -1,3 +1,4 @@
+#pragma once
 //
 // Bachelor of Software Engineering
 // Media Design School
@@ -29,14 +30,16 @@ public:
 	float suit;
 	float value;
 
+	int cardArray[4][13];
+
 
 
 	void cCard();
 	virtual ~Card();
 
-	void setSuit();
+	void setCard();
 	float getSuit();
-	void setValue();
+	//void setValue();
 	float getValue();
 
 

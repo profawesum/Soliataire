@@ -21,7 +21,7 @@ class Game {
 
 
 public:
-	
+
 	virtual ~Game();
 	void cGame();
 
@@ -38,6 +38,8 @@ public:
 
 	//The cards from the deck that you can use
 	void usableCardFromDeck();
+
+	void initialise();
 
 
 

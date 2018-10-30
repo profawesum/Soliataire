@@ -22,48 +22,48 @@ int gamemode;
 
 
 //destructor
-Game::~Game(){
+Game::~Game() {
 
-	 
+
 }
 
 //constructor
-void Game::cGame(){
+void Game::cGame() {
 
 
 }
 
 //used for the stacks at the top of the game
-void Game::aceStack(){
+void Game::aceStack() {
 
 
-		//checking the suit of the card that is wanting to be placed
-		if (s_AceStack.top() == card->getSuit()) {
-			if (card->getValue() > s_AceStack.top()) {
-				
-			}
+	//checking the suit of the card that is wanting to be placed
+	if (s_AceStack.top() == card->getSuit()) {
+		if (card->getValue() > s_AceStack.top()) {
+
 		}
-		
-		
-		if (s_AceStack2.top() == card->getSuit()) {
-			if (s_AceStack2.top()) {
+	}
 
-			}
-		}
-		
-		
-		if (s_AceStack3.top() == card->getSuit()) {
-			if (s_AceStack3.top()) {
 
-			}
-		}
-		
-		
-		if (s_AceStack4.top() == card->getSuit()) {
-			if (s_AceStack4.top()) {
+	if (s_AceStack2.top() == card->getSuit()) {
+		if (s_AceStack2.top()) {
 
-			}
 		}
+	}
+
+
+	if (s_AceStack3.top() == card->getSuit()) {
+		if (s_AceStack3.top()) {
+
+		}
+	}
+
+
+	if (s_AceStack4.top() == card->getSuit()) {
+		if (s_AceStack4.top()) {
+
+		}
+	}
 
 	//check to see if the the cards are the same suit
 	//check to see if the value is 1 greater than what is already there
@@ -71,7 +71,7 @@ void Game::aceStack(){
 }
 
 //used for the 7 rows, stacking the cards
-void Game::stack(){
+void Game::stack() {
 
 
 
@@ -95,21 +95,25 @@ void Game::stack(){
 
 }
 
-void Game::deck(){
+void Game::deck() {
 
 
 
+	for (int a = 0; a < 24; a++) {
+		//add remaining cards to the deck
+		s_Deck.push(card->getValue());
+	}
 
 	//use a stack to see what is the top card of the deck, when drawing
 }
 
 
-void Game::usableCardFromDeck(){
+void Game::usableCardFromDeck() {
 
 
 	//draw 1 card mode
 	if (gamemode == 1) {
-	
+
 		if (s_Deck.size() != NULL) {
 			//sets the float data to the top card of the deck
 			float data = s_Deck.top();
@@ -120,9 +124,9 @@ void Game::usableCardFromDeck(){
 
 
 			//TODO: move the bitmap to the right place
-			
+
 		}
-	
+
 	}
 	//draw 3 card mode
 	else {
@@ -130,14 +134,14 @@ void Game::usableCardFromDeck(){
 		if (s_Deck.size() != NULL) {
 
 			for (int a = 0; a < 3; a++) {
-					
+
 				float data = s_Deck.top();
 				s_UsableCard.push(data);
 				s_Deck.pop();
 
 
 				//TODO: place the bitmaps to the right place
-		
+
 			}
 		}
 	}
@@ -153,7 +157,22 @@ void Game::usableCardFromDeck(){
 
 
 			//TODO: return the bitmaps to the original deck place
-		
+
 		}
 	}
+}
+
+
+
+//call at the start of any game
+void Game::initialise() {
+
+	//set the card suit and value
+	card->setCard();
+	//stack out the cards in a random order
+	stack();
+	//put the remaining cards in a random order into a stack for the deck
+	deck();
+
+
 }
