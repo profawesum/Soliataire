@@ -4,7 +4,6 @@
 #include "card.h"
 #include "utils.h"
 #include "backbuffer.h"
-#include "framecounter.h"
 #include "background.h"
 #include <iostream>
 

@@ -1,0 +1,5 @@
+﻿  level.cpp
+e:\github\soliataire\solitaire\level.cpp(281): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+e:\github\soliataire\solitaire\level.cpp(485): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+e:\github\soliataire\solitaire\level.cpp(486): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+  Solitaire.vcxproj -> E:\Github\Soliataire\x64\Debug\Solitaire.exe

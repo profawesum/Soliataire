@@ -150,7 +150,6 @@
     <ClCompile Include="clock.cpp" />
     <ClCompile Include="card.cpp" />
     <ClCompile Include="entity.cpp" />
-    <ClCompile Include="framecounter.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="main.cpp" />
@@ -163,7 +162,6 @@
     <ClInclude Include="card.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="EEnums.h" />
-    <ClInclude Include="framecounter.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="resource.h" />
