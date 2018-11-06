@@ -1,48 +1,49 @@
-#pragma once
-//
-// Bachelor of Software Engineering
-// Media Design School
-// Auckland
-// New Zealand
-//
-// (c) 2018 Media Design School
-//
-// File Name	: 
-// Description	: 
-// Author		: Harrison Orsbourne and co.
-// Mail			: your.name@mediadesign.school.nz
-//
-
 
 
 #pragma once
 
+#if !defined(__CARD_H__)
+#define __CARD_H__
 
-#include <windows.h>
+// Library Includes
+#include <ctime>
 
+// Local Includes
+#include "entity.h"
+#include "sprite.h"
 
-
-class Card {
-
+class CCard : public CEntity
+{
+	// Member Variables
 public:
+	CCard();
+	virtual ~CCard();
 
+	virtual bool Initialise(ESprite _spriteType);
+	virtual void Draw();
+	virtual void Process(float _fDeltaTick);
 
-	float suit;
-	float value;
+	void SetFaceUp(bool _b);
+	bool GetIsFaceUp() const;
 
-	int cardArray[4][13];
+	bool GetIsRedSuit();
 
+	ESuit GetCardSuit();
+protected:
 
+	ESprite m_eSpriteType;
+	ESuit m_eCardSuit;
+	bool m_bFacingUp;
 
-	void cCard();
-	virtual ~Card();
+	//Deck holding this card
+	EDeckType m_eDeckType;
+	EBDeck m_eBoardDeckType;
 
-	void setCard();
-	float getSuit();
-	//void setValue();
-	float getValue();
-
-
-
-
+private:
+	CCard(const CCard& _kr);
+	CCard& operator= (const CCard& _kr);
 };
+
+
+#endif    // __CARD_H__
+

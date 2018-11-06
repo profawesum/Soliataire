@@ -1,91 +1,111 @@
-//
-// Bachelor of Software Engineering
-// Media Design School
-// Auckland
-// New Zealand
-//
-// (c) 2018 Media Design School
-//
-// File Name	: 
-// Description	: 
-// Author		: Harrison Orsbourne and co.
-// Mail			: your.name@mediadesign.school.nz
-//
+
+#include "utils.h"
 
 
-#include "resource.h"
-#include "Card.h"
+#include "card.h"
 
-
-
-
-//constructor - Harry
-void Card::cCard() {
-
-
+CCard::CCard()
+: m_bFacingUp(false)
+//, m_fCollisionBoundaryX(0)
+//, m_fCollisionBoundaryY(0)
+{
 }
 
-
-
-//Destructor - Harry
-Card::~Card() {
-
-
+CCard::~CCard()
+{
+	
 }
 
+/*********
+* Initialise: Initialises the card
+* @parameter _spriteType - type of card to declare 
+			(determine by Enum ESprites which are also used by 
+			the spriteclass to distinguish between cards.)
+* @return: true
+**********/
+bool
+CCard::Initialise(ESprite _spriteType)
+{
+	m_eSpriteType = _spriteType;
+    VALIDATE(CEntity::Initialise(_spriteType));
 
+	//Assign suit types for each card
+	if ((int)m_eSpriteType >= 1 && (int)m_eSpriteType <= 13)
+	{
+		m_eCardSuit = ESuit::SPADES;
+	}
+	else if ((int)m_eSpriteType >= 12 && ((int)m_eSpriteType <= 26))
+	{
+		m_eCardSuit = ESuit::HEARTS;
+	}
+	else if ((int)m_eSpriteType >= 27 && ((int)m_eSpriteType <= 39))
+	{
+		m_eCardSuit = ESuit::CLUBS;
+	}
+	else if ((int)m_eSpriteType >= 40 && ((int)m_eSpriteType <= 52))
+	{
+		m_eCardSuit = ESuit::DIAMONDS;
+	}
 
-//call this each time there is a new game - Harry
-void Card::setCard() {
+    return (true);
+}
 
-	//Suit 1 = Spades, Suit 2 = Clubs 
-	//Suit 3 = Hearts, Suit 4 = Diamonds
+/*********
+* Draw: Draws a card if called
+**********/
+void
+CCard::Draw()
+{
+     CEntity::Draw();
+}
 
-	//Value 11 = Jack, Value 12 = Queen
-	//Value 13 = King
+/*********
+* Process: Processes any card activity that occurs
+**********/
+void
+CCard::Process(float _fDeltaTick)
+{
+    CEntity::Process(_fDeltaTick);
+}
 
-	//Set the suit of the cards at the start of the game
-	for (int a = 0; a < 4; a++) {
-		for (int b = 0; b < 13; b++) {
-			//a = suit, b = value
-			cardArray[4][13] = cardArray[a][b];
-		}
+/*********
+* SetHidden: Sets the card to either it's back or face
+* @parameter: _b - true for back, false for face
+**********/
+void
+CCard::SetFaceUp(bool _b)
+{
+	FlipOpenCard(_b, *this);
+	m_bFacingUp = _b;
+}
+
+/*********
+* IsHidden: Getter to check whether card is hidden or not
+* @return: m_bHidden - wether the card is hidden or not
+**********/
+bool
+CCard::GetIsFaceUp() const
+{
+    return (m_bFacingUp);
+}
+
+bool CCard::GetIsRedSuit()
+{
+	if (GetCardSuit() == ESuit::DIAMONDS || GetCardSuit() == ESuit::HEARTS)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
-
-//
-////call this each time there is a new game -Harry
-//void Card::setValue() {
-//	//set the value of the cards at the start of the game
-//	for (int a = 0; a < 4; a++) {
-//		for (int b = 0; b < 13; b++) {
-//			//set the bitmap of each card based on their suit and value
-//			//Set the value of each card
-//			//Jack is 11, Queen is 12 and King is 13
-//			value++;
-//		}
-//		//resets it for the next suit
-//		if (value == 13) {
-//			value = 1;
-//		}
-//	}
-//
-//
-//}
-
-//use this when you need to get a suit from a card
-float Card::getSuit() {
-
-
-	return suit;
+/*********
+* GetCardSuit: Gets the suit of the card
+* @return: m_eCardSuit - the suit
+**********/
+ESuit CCard::GetCardSuit()
+{
+	return m_eCardSuit;
 }
-
-
-//use this when you need to get a value from a card
-float Card::getValue() {
-
-
-	return value;
-}
-

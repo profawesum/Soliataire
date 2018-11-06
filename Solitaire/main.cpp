@@ -1,179 +1,184 @@
-//
-// Bachelor of Software Engineering
-// Media Design School
-// Auckland
-// New Zealand
-//
-// (c) 2018 Media Design School
-//
-// File Name	: 
-// Description	: 
-// Author		: Harrison Orsbourne and co.
-// Mail			: your.name@mediadesign.school.nz
-//
 
-
-
-#include "resource.h"
-#include "Card.h"
-#include "Game.h"
 
 #include <windows.h>
 #include <windowsx.h>
 
+#include "Game.h"
+#include "Clock.h"
+#include "utils.h"
+#include "resource.h"
 
-#define WINDOW_CLASS_NAME L"WINCLASS1"
+#define WINDOW_CLASS_NAME L"BSENGGFRAMEWORK"
 
-HINSTANCE g_hInstance;
+CGame& game = CGame::GetInstance();
 HMENU g_hMenu;
 
-Card card;
-Game game;
-
-
-void GameLoop() {
-
-	//One frame of game logic occurs here...
-
-}
-
-LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lparam)
+LRESULT CALLBACK
+WindowProc(HWND _hWnd, UINT _uiMsg, WPARAM _wParam, LPARAM _lParam)
 {
-
-	switch (_msg)
-	{
-	case WM_CREATE:
-	{	// Return Success.
-		return (0);
-	}
+    switch (_uiMsg)
+    {
 
 	case WM_COMMAND:
 	{
-		switch (LOWORD(_wparam)) {
-
-
-		case ID_FILE_QUIT: {
+		switch (LOWORD(_wParam)) {
+		
+		//start new game with drawing 1 card
+		case ID_NEWGAME_DRAW1: {
+			//starts new game
+			game.draw3 = 0;
+			game.NewGame();
+			break;
+		}
+		//start new game with drawing 3 cards
+		case ID_NEWGAME_DRAW3: {
+			//starts new game
+			game.draw3 = 1;
+			game.NewGame();
+			break;
+		}
+		//show the instructions
+		case ID_ABOUT_INSTRUCTIONS: {
+		
+			break;
+		}
+		//quits the game
+		case ID_QUIT: {
 
 			PostQuitMessage(0);
 			break;
 
 		}
-		case ID_HELP_HOWTOPLAY: {
-			//insert instructions on how to play
-
-			break;
-		}
-		case ID_HELP_CONTROLS: {
-			//insert control text here
-			game.initialise();
-			break;
-		}
-		case ID_NEWGAME_DRAW1: {
-			//insert stuff to start game only drawing one card
-			game.initialise();
-			break;
-		}
-		case ID_NEWGAME_DRAW3: {
-			//insert stuff to start game only drawing 3 cards
-
-			break;
-		}
-
 		default:
 			break;
 		}
+	
 	}
+		case WM_LBUTTONDOWN:
+		{
+			float _iMouseX = static_cast<float>(LOWORD(_lParam));
+			float _iMouseY = static_cast<float>(HIWORD(_lParam));
+			game.GetLevelInstance()->HandleUserClick(_iMouseX, _iMouseY);
 
-	case WM_DESTROY:
-	{
-		// Kill the application, this sends a WM_QUIT message.
-		PostQuitMessage(0);
+			return (0);
+		}
+		break;
+		case WM_LBUTTONUP:
+		{
+			// Simply validate the window.
 
-		// Return success.
-		return (0);
-	}
-	break;
-	default:break;
-	} // End switch.
+			float _iMouseX = static_cast<float>(LOWORD(_lParam));
+			float _iMouseY = static_cast<float>(HIWORD(_lParam));
+			game.GetLevelInstance()->HandleUserRelease(_iMouseX, _iMouseY);
 
-	  // Process any messages that we did not take care of...
+			return (0);
+		}
+		break;
+		case WM_MOUSEMOVE:
+		{
+			// Simply validate the window.
+			int _iMouseX = static_cast<int>(LOWORD(_lParam));
+			int _iMouseY = static_cast<int>(HIWORD(_lParam));
+			CGame::m_MouseX = _iMouseX;
+			CGame::m_MouseY = _iMouseY;
 
-	return (DefWindowProc(_hwnd, _msg, _wparam, _lparam));
+			return (0);
+		}
+		break;
+        case WM_DESTROY:
+        {
+            PostQuitMessage(0);
+
+            return(0);
+        }
+        break;
+
+        default:break;
+    } 
+
+    return (DefWindowProc(_hWnd, _uiMsg, _wParam, _lParam));
 }
 
+HWND 
+CreateAndRegisterWindow(HINSTANCE _hInstance, int _iWidth, int _iHeight, LPCWSTR _pcTitle)
+{
+    WNDCLASSEX winclass;
 
+    winclass.cbSize = sizeof(WNDCLASSEX);
+    winclass.style = CS_HREDRAW | CS_VREDRAW;
+    winclass.lpfnWndProc = WindowProc;
+    winclass.cbClsExtra = 0;
+    winclass.cbWndExtra = 0;
+    winclass.hInstance = _hInstance;
+    winclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    winclass.hCursor = LoadCursor(NULL, IDC_ARROW);
+    winclass.hbrBackground = static_cast<HBRUSH> (GetStockObject(WHITE_BRUSH));
+    winclass.lpszMenuName = NULL;
+    winclass.lpszClassName = WINDOW_CLASS_NAME;
+    winclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
+    if (!RegisterClassEx(&winclass))
+    {
+        // Failed to register.
+        return (0);
+    }
 
-int WINAPI WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdLine, int _nCmdShow) {
-
-	WNDCLASSEX winclass; // This will hold the class we create.
-	HWND hwnd;           // Generic window handle.
-	MSG msg;             // Generic message.
-
-	g_hInstance = _hInstance;
-	// First fill in the window class structure.
-	winclass.cbSize = sizeof(WNDCLASSEX);
-	winclass.style = CS_DBLCLKS | CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
-	winclass.lpfnWndProc = WindowProc;
-	winclass.cbClsExtra = 0;
-	winclass.cbWndExtra = 0;
-	winclass.hInstance = _hInstance;
-	winclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	winclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-	winclass.hbrBackground =
-		static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
-	winclass.lpszMenuName = NULL;
-	winclass.lpszClassName = WINDOW_CLASS_NAME;
-	winclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-
-	// register the window class
-	if (!RegisterClassEx(&winclass))
-	{
-		return (0);
-	}
-
+    HWND hwnd; 
 	g_hMenu = LoadMenu(_hInstance, MAKEINTRESOURCE(IDR_MENU1));
-	// create the window
-	hwnd = CreateWindowEx(NULL, // Extended style.
-		WINDOW_CLASS_NAME,      // Class.
-		L"Harrys Soltaire",   // Title.
-		WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-		100, 100,                    // Initial x,y.
-		1500, 800,                // Initial width, height.
-		NULL,                   // Handle to parent.
-		g_hMenu,                   // Handle to menu.
-		_hInstance,             // Instance of this application.
-		NULL);                  // Extra creation parameters.
 
-	if (!(hwnd))
-	{
-		return (0);
-	}
+    hwnd = CreateWindowEx(NULL,
+                  WINDOW_CLASS_NAME,
+                  _pcTitle,
+				  WS_BORDER | WS_CAPTION | WS_SYSMENU | WS_VISIBLE, 
+				  (GetSystemMetrics(SM_CXSCREEN) - _iWidth)/2, (GetSystemMetrics(SM_CYSCREEN) - _iHeight)/2, //Window position
+                  _iWidth, _iHeight,
+                  NULL,
+                  g_hMenu,
+                  _hInstance,
+                  NULL);
+    
+    if (!hwnd)
+    {
+        // Failed to create.
+        return (0);
+    }
+
+    return (hwnd);
+}
+
+int WINAPI
+WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdline, int _iCmdshow)
+{
+    MSG msg;
+    ZeroMemory(&msg, sizeof(MSG));
+
+    const int kiWidth = 1195;
+    const int kiHeight = 945;
 
 
+    HWND hwnd = CreateAndRegisterWindow(_hInstance, kiWidth, kiHeight, L"Solitaire");
 
-	// Enter main event loop
-	while (true)
-	{
-		// Test if there is a message in queue, if so get it.
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
-			// Test if this is a quit.
-			if (msg.message == WM_QUIT)
-			{
-				break;
-			}
 
-			// Translate any accelerator keys.
-			TranslateMessage(&msg);
-			// Send the message to the window proc.
-			DispatchMessage(&msg);
-		}
+    if (!game.Initialise(_hInstance, hwnd, kiWidth, kiHeight))
+    {
+        // Failed
+        return (0);
+    }
 
-		// Main game processing goes here.
-		GameLoop(); //One frame of game logic occurs here...
-	}
+    while (msg.message != WM_QUIT)
+    {
+        if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+        else
+        {
+            game.ExecuteOneFrame();
+        }
+    }
 
-	// Return to Windows like this...
-	return (static_cast<int>(msg.wParam));
+    CGame::DestroyInstance();
+
+    return (static_cast<int>(msg.wParam));
 }

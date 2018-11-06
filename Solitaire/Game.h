@@ -1,68 +1,81 @@
-//
-// Bachelor of Software Engineering
-// Media Design School
-// Auckland
-// New Zealand
-//
-// (c) 2018 Media Design School
-//
-// File Name	: 
-// Description	: 
-// Author		: Harrison Orsbourne and co.
-// Mail			: your.name@mediadesign.school.nz
-//
 
-#pragma once
 
+#if !defined(__GAME_H__)
+#define __GAME_H__
+
+// Library Includes
 #include <windows.h>
-#include <stack>
 
-class Game {
+// Local Includes
+#include "clock.h"
+#include "level.h"
+// Types
 
+// Constants
 
+// Prototypes
+class CBackBuffer;
+
+class CGame
+{
+    // Member Functions
 public:
 
-	virtual ~Game();
-	void cGame();
+
+
+    ~CGame();
+
+	int draw3 = 0;
+
+    bool Initialise(HINSTANCE _hInstance, HWND _hWnd, int _iWidth, int _iHeight);
+
+    void Draw();
+    void Process(float _fDeltaTick);
+
+    void ExecuteOneFrame();
+	void GameOverWon();
+
+    CBackBuffer* GetBackBuffer();
+    HINSTANCE GetAppInstance();
+    HWND GetWindow();
+
+	void NewGame();
+
+    // Singleton Methods
+    static CGame& GetInstance();
+    static void DestroyInstance();
+	CLevel* GetLevelInstance();
+
+	static int m_MouseX;
+	static int m_MouseY;
+
+protected:
+
+private:
+    CGame();
+    CGame(const CGame& _kr);
+    CGame& operator= (const CGame& _kr);
+
+    // Member Variables
+public:
 
 
 
-	//used for the stacks at the top of the game
-	void aceStack();
+protected:
+    CClock* pClock;
+	CLevel* pLevel;
 
-	//used for the 7 rows, stacking the cards
-	void stack();
+    CBackBuffer* pBackbuffer;
 
-	//used for the deck of cards remaining
-	void deck();
+    //Application data
+    HINSTANCE hInstance;
+    HWND _hwnd;
 
-	//The cards from the deck that you can use
-	void usableCardFromDeck();
-
-	void initialise();
-
-
-
+    // Singleton Instance
+    static CGame* pGame;
 
 private:
 
-	//stacks for the ace stacks
-	std::stack<int> s_AceStack;
-	std::stack<int> s_AceStack2;
-	std::stack<int> s_AceStack3;
-	std::stack<int> s_AceStack4;
-
-	//stacks for the main rows
-	std::stack<int> s_7Stack;
-	std::stack<int> s_7Stack2;
-	std::stack<int> s_7Stack3;
-	std::stack<int> s_7Stack4;
-	std::stack<int> s_7Stack5;
-	std::stack<int> s_7Stack6;
-	std::stack<int> s_7Stack7;
-
-	//stacks for the deck and the usable card
-	std::stack<int> s_Deck;
-	std::stack<int> s_UsableCard;
-
 };
+
+#endif    // __GAME_H__
